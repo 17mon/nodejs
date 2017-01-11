@@ -33,7 +33,11 @@ var IpFind = function(ip){
 
     var offset = dataBuffer.readInt32BE(0);
     var indexBuffer = dataBuffer.slice(4, offset - 4 + 4);
-    var tmp_offset = ipArray[0] * 256 + ipArray[1] * 4, max_comp_len = offset - 262144 - 4, index_offset = -1, index_length = -1, start = indexBuffer.slice(tmp_offset, tmp_offset + 4).readInt32LE(0);
+    var tmp_offset = (parseInt(ipArray[0]) * 256 + parseInt(ipArray[1])) * 4;
+    var start = indexBuffer.slice(tmp_offset, tmp_offset + 4).readInt32LE(0);
+    var max_comp_len = offset - 262144 - 4;
+    var index_offset = -1, index_length = -1;
+
     for (start = start * 9 + 262144; start < max_comp_len; start += 9) {
         if (indexBuffer.slice(start, start + 4).readInt32BE(0) >= ipInt) {
             index_offset = ((indexBuffer[start + 6] << 16) + (indexBuffer[start + 5] << 8) + indexBuffer[start + 4]);
